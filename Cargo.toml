@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "src/game-project-backend"
+]
+resolver = "2"

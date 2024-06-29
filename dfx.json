@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "game-project-backend": {
+      "candid": "src/game-project-backend/game-project-backend.did",
+      "package": "game-project-backend",
+      "type": "rust"
+    },
+    "game-project-frontend": {
+      "dependencies": [
+        "game-project-backend"
+      ],
+      "source": [
+        "src/game-project-frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "game-project-frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
