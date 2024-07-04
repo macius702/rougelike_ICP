@@ -1,29 +1,27 @@
-import { useState } from 'react';
-import { game_project_backend } from 'declarations/game-project-backend';
+import { useState } from "react";
+import RegisterPanel from "./components/registerForm/RegisterPanel";
+import LoginPanel from "./components/loginForm/LoginPanel";
+import { Provider } from "react-redux";
+import store from "../store/indexRedux";
+import Test from "./components/LoggedIn/Test";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [logStatus, setLogStatus] = useState("register"); // register, login, loggedIn
+  const [Logged, setLogged] = useState({});
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    game_project_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
-  }
+  console.log(Logged);
 
   return (
     <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
+      {logStatus === "register" && (
+        <RegisterPanel setLogStatus={setLogStatus} />
+      )}
+      <Provider store={store} key="home">
+        {logStatus === "login" && (
+          <LoginPanel setLogStatus={setLogStatus} setLogged={setLogged} />
+        )}
+        {logStatus === "loggedIn" && <Test />}
+      </Provider>
     </main>
   );
 }

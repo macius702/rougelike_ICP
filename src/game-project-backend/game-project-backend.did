@@ -1,3 +1,13 @@
 service : {
-    "greet": (text) -> (text) query;
+    "add_user": (text, text, int32, int32) -> ();
+    "read_logins": () -> (vec text) query;
+    "read_passwords": () -> (vec text) query;
+    "read_gold": () -> (vec int32) query;
+    "read_power": () -> (vec int32) query;
+    "find_login_index": (text)-> (int32) query;
+    "compare_password_at_index": (int32, text) -> (bool) query;
+    "find_login_and_compare_password": (text,text) -> (bool) query;
+    "get_password_at_index": (int32) -> (text) query;
+    "get_gold_at_index": (int32) -> (int32) query;
+    "get_power_at_index": (int32) -> (int32) query;
 }
