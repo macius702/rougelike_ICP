@@ -6,8 +6,9 @@ import { game_project_backend } from "declarations/game-project-backend";
 import { decryptString } from "../../../tools/enryption";
 import { useDispatch } from "react-redux";
 import { profileActions } from "../../../store/profileSlice";
+import { motion } from "framer-motion";
 
-export default function LoginPanel({ setLogStatus, setLogged }) {
+export default function LoginPanel({ setLogStatus }) {
   const dispatch = useDispatch();
 
   const loginRef = useRef(null);
@@ -50,7 +51,6 @@ export default function LoginPanel({ setLogStatus, setLogged }) {
           const loginIndex = await game_project_backend.find_login_index(
             loginRef.current.value
           );
-          console.log(loginIndex);
           if (loginIndex >= 0) {
             setLoading(true);
             var loginPassword =
@@ -67,25 +67,19 @@ export default function LoginPanel({ setLogStatus, setLogged }) {
                 loginIndex
               );
 
-              setLogged({
-                name: loginRef.current.value,
-                gold,
-                power,
-              });
-
-              //
               dispatch(
                 profileActions.LOGIN({
+                  index: loginIndex,
                   name: loginRef.current.value,
                   gold,
                   power,
                 })
               );
+              setLogStatus("loggedIn");
             } else {
               setPasswordErrorOption("Password is incorrect.");
             }
             setLoading(false);
-            setLogStatus("loggedIn");
           } else {
             setLoginErrorOption("This Login doesn't exist.");
           }
@@ -104,7 +98,12 @@ export default function LoginPanel({ setLogStatus, setLogged }) {
   }
 
   return (
-    <div className={classes.loginPanelDiv}>
+    <motion.div
+      className={classes.loginPanelDiv}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className={classes.loginForm}>
         <h1>Login</h1>
         <div className={classes.form}>
@@ -135,6 +134,6 @@ export default function LoginPanel({ setLogStatus, setLogged }) {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

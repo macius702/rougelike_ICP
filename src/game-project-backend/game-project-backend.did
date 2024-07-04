@@ -10,4 +10,6 @@ service : {
     "get_password_at_index": (int32) -> (text) query;
     "get_gold_at_index": (int32) -> (int32) query;
     "get_power_at_index": (int32) -> (int32) query;
+    "update_user_portrait": (int32, int32) -> ();
+    "get_user_portrait_at_index": (int32) -> (int32) query;
 }

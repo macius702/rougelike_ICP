@@ -5,6 +5,7 @@ thread_local! {
     static PASSWORDS: RefCell<Vec<String>> = RefCell::default(); 
     static GOLD_POUCHES: RefCell<Vec<i32>> = RefCell::default(); 
     static USER_POWERS: RefCell<Vec<i32>> = RefCell::default(); 
+    static USER_PORTRAIT: RefCell<Vec<i32>> = RefCell::default(); 
 }
 
 #[ic_cdk::update]
@@ -23,6 +24,10 @@ fn add_user(login: String, password: String, gold: i32, power: i32) {
 
     USER_POWERS.with(|powers_cell| {
         powers_cell.borrow_mut().push(power);
+    });
+
+    USER_PORTRAIT.with(|powers_cell| {
+        powers_cell.borrow_mut().push(0);
     });
 }
 
@@ -125,4 +130,29 @@ fn find_login_and_compare_password(login: String, password: String) -> bool {
     });
 
     result
+}
+
+#[ic_cdk::update]
+fn update_user_portrait(index: i32, number: i32) {
+    USER_PORTRAIT.with(|user_portrait| {
+        let mut user_portrait_borrow = user_portrait.borrow_mut();
+        if let Some(idx) = index.checked_abs().and_then(|i| Some(i as usize)) {
+            if idx < user_portrait_borrow.len() {
+                user_portrait_borrow[idx] = number;
+            }
+        }
+    });
+}
+
+#[ic_cdk::query]
+fn get_user_portrait_at_index(index: i32) -> i32 {
+    USER_PORTRAIT.with(|user_portrait| {
+        let user_portrait_borrow = user_portrait.borrow();
+        if let Some(idx) = index.checked_abs().and_then(|i| Some(i as usize)) {
+            if let Some(portrait) = user_portrait_borrow.get(idx) {
+                return *portrait;
+            }
+        }
+        0 // Return 0 if index is out of bounds
+    })
 }

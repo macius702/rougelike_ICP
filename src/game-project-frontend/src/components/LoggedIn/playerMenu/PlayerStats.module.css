@@ -1,0 +1,19 @@
+.playerStatsDiv {
+  width: 100%;
+  text-align: center;
+}
+.playerStatsDiv p {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.levelBar {
+  margin: 0 auto;
+  width: 60%;
+  background-color: rgb(226, 208, 191);
+  height: 25px;
+}
+.levelProgress{
+    height: 100%;
+    background-color: rgb(136, 212, 136);
+}

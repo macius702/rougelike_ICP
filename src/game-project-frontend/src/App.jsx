@@ -3,13 +3,11 @@ import RegisterPanel from "./components/registerForm/RegisterPanel";
 import LoginPanel from "./components/loginForm/LoginPanel";
 import { Provider } from "react-redux";
 import store from "../store/indexRedux";
-import Test from "./components/LoggedIn/Test";
+import GameDisplay from "./components/LoggedIn/GameDisplay";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const [logStatus, setLogStatus] = useState("register"); // register, login, loggedIn
-  const [Logged, setLogged] = useState({});
-
-  console.log(Logged);
 
   return (
     <main>
@@ -17,10 +15,10 @@ function App() {
         <RegisterPanel setLogStatus={setLogStatus} />
       )}
       <Provider store={store} key="home">
-        {logStatus === "login" && (
-          <LoginPanel setLogStatus={setLogStatus} setLogged={setLogged} />
-        )}
-        {logStatus === "loggedIn" && <Test />}
+        <AnimatePresence>
+          {logStatus === "login" && <LoginPanel setLogStatus={setLogStatus} />}
+        </AnimatePresence>
+        {logStatus === "loggedIn" && <GameDisplay />}
       </Provider>
     </main>
   );

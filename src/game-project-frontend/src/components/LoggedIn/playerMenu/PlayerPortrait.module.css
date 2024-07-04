@@ -1,0 +1,24 @@
+.playerStatsDiv {
+  margin-top: 25px;
+}
+.playerImageDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.playerImageDiv svg {
+  width: 50px;
+  user-select: none;
+}
+.imageDiv {
+  text-align: center;
+}
+.imageDiv img {
+  user-select: none;
+}
+.imageDiv p {
+  font-size: 25px;
+  margin-top: 0;
+}
