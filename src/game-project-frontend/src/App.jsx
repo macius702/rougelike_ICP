@@ -3,7 +3,7 @@ import RegisterPanel from "./components/registerForm/RegisterPanel";
 import LoginPanel from "./components/loginForm/LoginPanel";
 import { Provider } from "react-redux";
 import store from "../store/indexRedux";
-import GameDisplay from "./components/LoggedIn/GameDisplay";
+import GameDisplay from "./components/loggedIn/GameDisplay";
 import { AnimatePresence } from "framer-motion";
 
 function App() {

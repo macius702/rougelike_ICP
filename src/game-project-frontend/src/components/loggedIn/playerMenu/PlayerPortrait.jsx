@@ -6,8 +6,11 @@ import { motion } from "framer-motion";
 import { game_project_backend } from "declarations/game-project-backend";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { profileActions } from "../../../../store/profileSlice";
 
 export default function PlayerPortrait() {
+  const dispatch = useDispatch();
   const image_array = [knight, ranger, mage];
   const image_array_names = ["Knight", "Ranger", "Mage"];
   const [selectedPortrait, setSelectedPortrait] = useState(0);
@@ -20,12 +23,16 @@ export default function PlayerPortrait() {
       databaseSelectedImage =
         await game_project_backend.get_user_portrait_at_index(userIndex);
       setSelectedPortrait(databaseSelectedImage);
+      dispatch(profileActions.CHANGE_CLASS(databaseSelectedImage));
     }
     fetchSelectedImage();
   }, []);
   useEffect(() => {
     async function changeSelectedImage() {
-      await game_project_backend.update_user_portrait(userIndex, selectedPortrait);
+      await game_project_backend.update_user_portrait(
+        userIndex,
+        selectedPortrait
+      );
     }
     if (selectedPortrait !== databaseSelectedImage) {
       changeSelectedImage();
@@ -33,9 +40,16 @@ export default function PlayerPortrait() {
   }, [selectedPortrait]);
 
   function changeSelectedImageFromSvg(value) {
-    if (value === 1 && selectedPortrait === 2) setSelectedPortrait(0);
-    else if (value === -1 && selectedPortrait === 0) setSelectedPortrait(2);
-    else setSelectedPortrait((prev) => prev + value);
+    if (value === 1 && selectedPortrait === 2) {
+      setSelectedPortrait(0);
+      dispatch(profileActions.CHANGE_CLASS(0));
+    } else if (value === -1 && selectedPortrait === 0) {
+      setSelectedPortrait(2);
+      dispatch(profileActions.CHANGE_CLASS(2));
+    } else {
+      dispatch(profileActions.CHANGE_CLASS(selectedPortrait + value));
+      setSelectedPortrait((prev) => prev + value);
+    }
   }
 
   const hover = {
@@ -77,8 +91,8 @@ export default function PlayerPortrait() {
           </g>
         </motion.svg>
         <div className={classes.imageDiv}>
-        <img src={image_array[selectedPortrait]} />
-        <p>{image_array_names[selectedPortrait]}</p>
+          <img src={image_array[selectedPortrait]} />
+          <p>{image_array_names[selectedPortrait]}</p>
         </div>
         <motion.svg
           onClick={() => changeSelectedImageFromSvg(-1)}

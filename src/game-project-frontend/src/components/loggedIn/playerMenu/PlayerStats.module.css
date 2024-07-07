@@ -7,13 +7,18 @@
   margin-top: 0;
   margin-bottom: 5px;
 }
-.levelBar {
+.levelBar,
+.healthBar {
   margin: 0 auto;
   width: 60%;
   background-color: rgb(226, 208, 191);
   height: 25px;
 }
-.levelProgress{
-    height: 100%;
-    background-color: rgb(136, 212, 136);
+.levelProgress {
+  height: 100%;
+  background-color: rgb(136, 212, 136);
+}
+.healthProgress {
+  height: 100%;
+  background-color: rgb(212, 136, 136);
 }

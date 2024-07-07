@@ -66,6 +66,18 @@ export default function LoginPanel({ setLogStatus }) {
               const power = await game_project_backend.get_power_at_index(
                 loginIndex
               );
+              const cave_floor =
+                await game_project_backend.get_user_cave_floor_at_index(
+                  loginIndex
+                );
+              const forest_floor =
+                await game_project_backend.get_user_forest_floor_at_index(
+                  loginIndex
+                );
+              const level =
+                await game_project_backend.get_user_experience_at_index(
+                  loginIndex
+                );
 
               dispatch(
                 profileActions.LOGIN({
@@ -73,8 +85,13 @@ export default function LoginPanel({ setLogStatus }) {
                   name: loginRef.current.value,
                   gold,
                   power,
+                  cave_floor,
+                  forest_floor,
+                  level,
                 })
               );
+              dispatch(profileActions.CHANGE_HEALTH(33 + power));
+
               setLogStatus("loggedIn");
             } else {
               setPasswordErrorOption("Password is incorrect.");

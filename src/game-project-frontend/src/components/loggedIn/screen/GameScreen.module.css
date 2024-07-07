@@ -42,7 +42,7 @@
 .locationInn:hover {
   cursor: pointer;
 }
-.innDiv{
+.innDiv,.caveDiv {
   width: 100%;
   height: 100%;
   position: relative;
@@ -51,18 +51,23 @@
   width: 1120px;
   height: 900px;
 }
-.locationMenu{
+.characterDiv {
   position: absolute;
-  left: 350px;
-  top: 200px;
-  width: 420px;
-  height: 500px;
-  background-color: #0000009c;
-  border-radius: 15px;
+  bottom: 0;
+  width: 800px;
+  height: 800px;
+  left: 160px;
 }
-.backArrow{
-  padding: 15px;
+.dialogMenu{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: #000000be;
+  height: 300px;
+  color: white;
+  padding: 25px;
 }
-.backArrow svg{
-  width: 50px;
+.pointerHover{
+  cursor: pointer;
+  user-select: none;
 }

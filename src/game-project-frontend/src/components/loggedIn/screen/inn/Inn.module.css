@@ -1,0 +1,38 @@
+.innDiv {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.locationBackground {
+  width: 1120px;
+  height: 900px;
+}
+.characterDiv {
+  position: absolute;
+  bottom: 0;
+  width: 800px;
+  height: 800px;
+  left: 160px;
+}
+.dialogMenu {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: #000000be;
+  height: 300px;
+  color: white;
+  padding: 25px;
+}
+.pointerHover {
+  cursor: pointer;
+  user-select: none;
+}
+.notificationMessage {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  color: white;
+  background-color: #000000be;
+  justify-content: center;
+  padding: 25px;
+}

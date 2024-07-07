@@ -1,0 +1,24 @@
+.enemyInfo {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+.enemyInfo p {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.enemyInfo img{
+    width: 50px;
+}
+.healthBar {
+  margin: 0 auto;
+  width: 60%;
+  background-color: rgb(226, 208, 191);
+  height: 25px;
+}
+.healthProgress {
+  height: 100%;
+  background-color: rgb(212, 136, 136);
+}

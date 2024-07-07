@@ -12,4 +12,12 @@ service : {
     "get_power_at_index": (int32) -> (int32) query;
     "update_user_portrait": (int32, int32) -> ();
     "get_user_portrait_at_index": (int32) -> (int32) query;
+    "update_user_gold": (int32, int32) -> ();
+    "update_user_power": (int32, int32) -> ();
+    "get_user_cave_floor_at_index": (int32) -> (int32) query;
+    "update_user_cave_floor": (int32, int32) -> ();
+    "get_user_forest_floor_at_index": (int32) -> (int32) query;
+    "update_user_forest_floor": (int32, int32) -> ();
+    "get_user_experience_at_index": (int32) -> (int32) query;
+    "update_user_experience": (int32, int32) -> ();
 }

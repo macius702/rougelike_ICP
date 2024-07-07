@@ -7,9 +7,9 @@ import inn from "../../../../public/inn_pixel.png";
 import forest_selected from "../../../../public/forest_pixel_selected.png";
 import cave_selected from "../../../../public/cave_pixel_selected.png";
 import inn_selected from "../../../../public/inn_pixel_selected.png";
-
-import inn_full from "../../../../public/inn_full_pixel.png";
 import { useState } from "react";
+import Dungeon from "./dungeon/Dungeon";
+import Inn from "./inn/Inn";
 
 export default function GameScreen({ location, setLocation }) {
   const [forestHover, setForestHover] = useState(false);
@@ -38,6 +38,7 @@ export default function GameScreen({ location, setLocation }) {
               className={classes.locationCave}
               onPointerOver={() => setCaveHover(true)}
               onPointerOut={() => setCaveHover(false)}
+              onClick={() => setLocation("cave")}
             />
             <img
               src={innHover ? inn_selected : inn}
@@ -50,35 +51,9 @@ export default function GameScreen({ location, setLocation }) {
           </div>
         </div>
       )}
-      {location === "inn" && (
-        <div className={classes.innDiv}>
-          <img
-            src={inn_full}
-            alt="Inn"
-            className={classes.locationBackground}
-          />
-          <div className={classes.locationMenu}>
-            <div className={classes.backArrow}>
-              <svg
-                fill="#ffffff"
-                viewBox="0 0 22 22"
-                xmlns="http://www.w3.org/2000/svg"
-                id="memory-arrow-down-right"
-                transform="rotate(180)"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  <path d="M19 12V14H18V15H17V16H16V17H15V18H13V16H14V15H15V14H11V13H9V12H8V10H7V3H9V9H10V11H12V12H15V11H14V10H13V8H15V9H16V10H17V11H18V12"></path>
-                </g>
-              </svg>
-            </div>
-          </div>
-        </div>
+      {location === "inn" && <Inn setLocation={setLocation}/>}
+      {location === "cave" && (
+        <Dungeon setLocation={setLocation} location={location} />
       )}
     </div>
   );
