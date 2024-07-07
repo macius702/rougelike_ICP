@@ -9,6 +9,7 @@ thread_local! {
     static USER_CAVE_FLOOR: RefCell<Vec<i32>> = RefCell::default(); 
     static USER_FOREST_FLOOR: RefCell<Vec<i32>> = RefCell::default(); 
     static USER_EXPERIENCE: RefCell<Vec<i32>> = RefCell::default(); 
+    static USER_HEALTH: RefCell<Vec<i32>> = RefCell::default(); 
 }
 
 #[ic_cdk::update]
@@ -40,6 +41,9 @@ fn add_user(login: String, password: String, gold: i32, power: i32) {
     });
     USER_EXPERIENCE.with(|powers_cell| {
         powers_cell.borrow_mut().push(0);
+    });
+    USER_HEALTH.with(|powers_cell| {
+        powers_cell.borrow_mut().push(34);
     });
 }
 
@@ -261,6 +265,31 @@ fn update_user_experience(index: i32, new_experience: i32) {
         if let Some(idx) = index.checked_abs().and_then(|i| Some(i as usize)) {
             if idx < user_experience_borrow.len() {
                 user_experience_borrow[idx] = new_experience;
+            }
+        }
+    });
+}
+
+#[ic_cdk::query]
+fn get_user_health_at_index(index: i32) -> i32 {
+    USER_HEALTH.with(|user_health| {
+        let user_health_borrow = user_health.borrow();
+        if let Some(idx) = index.checked_abs().and_then(|i| Some(i as usize)) {
+            if let Some(health) = user_health_borrow.get(idx) {
+                return *health;
+            }
+        }
+        0 // Return 0 if index is out of bounds
+    })
+}
+
+#[ic_cdk::update]
+fn update_user_health(index: i32, new_health: i32) {
+    USER_HEALTH.with(|user_health| {
+        let mut user_health_borrow = user_health.borrow_mut();
+        if let Some(idx) = index.checked_abs().and_then(|i| Some(i as usize)) {
+            if idx < user_health_borrow.len() {
+                user_health_borrow[idx] = new_health;
             }
         }
     });

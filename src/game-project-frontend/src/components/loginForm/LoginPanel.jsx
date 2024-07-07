@@ -7,6 +7,7 @@ import { decryptString } from "../../../tools/enryption";
 import { useDispatch } from "react-redux";
 import { profileActions } from "../../../store/profileSlice";
 import { motion } from "framer-motion";
+import { updateHealth } from "../../../store/thunkActions";
 
 export default function LoginPanel({ setLogStatus }) {
   const dispatch = useDispatch();
@@ -78,6 +79,10 @@ export default function LoginPanel({ setLogStatus }) {
                 await game_project_backend.get_user_experience_at_index(
                   loginIndex
                 );
+                const health =
+                await game_project_backend.get_user_health_at_index(
+                  loginIndex
+                );
 
               dispatch(
                 profileActions.LOGIN({
@@ -88,9 +93,11 @@ export default function LoginPanel({ setLogStatus }) {
                   cave_floor,
                   forest_floor,
                   level,
+                  health,
                 })
               );
-              dispatch(profileActions.CHANGE_HEALTH(33 + power));
+              if (power > 1)
+                dispatch(profileActions.CHANGE_MAX_HEALTH(33 + power));
 
               setLogStatus("loggedIn");
             } else {

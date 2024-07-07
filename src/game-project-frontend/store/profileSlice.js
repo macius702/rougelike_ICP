@@ -22,8 +22,8 @@ const profileSlice = createSlice({
       [20, 5, 10], //  arrow_shot: 20, poisoned_arrow_shot: 5, dagger_slash: 10
       [5, 10, 2], // fireball: 5, magic_missle: 10, health_regen: 2
     ],
-    max_health: 33,
-    health: 33,
+    max_health: 34,
+    health: 34,
     cave_floor: 1,
     forest_floor: 1,
   },
@@ -36,6 +36,7 @@ const profileSlice = createSlice({
       const cave_floor = action.payload.cave_floor;
       const forest_floor = action.payload.forest_floor;
       const level = action.payload.level;
+      const health = action.payload.health;
       state.index = index;
       state.name = name;
       state.gold = gold;
@@ -43,18 +44,11 @@ const profileSlice = createSlice({
       state.cave_floor = cave_floor;
       state.forest_floor = forest_floor;
       state.level = level;
+      state.health = health;
     },
     CHANGE_GOLD(state, action) {
       const newGold = state.gold + action.payload;
       state.gold = newGold;
-
-      async function updateGold() {
-        await game_project_backend.update_user_gold(
-          state.index,
-          state.gold
-        );
-      }
-      updateGold();
     },
     CHANGE_POWER(state, action) {
       const newPower = state.power + action.payload;
@@ -63,24 +57,10 @@ const profileSlice = createSlice({
     CHANGE_LEVEL(state, action) {
       let level = state.level + action.payload;
       if (level >= 100) {
-        const level_ups = Math.floor(level / 100);
-
-        const newPower = state.power + level_ups * 10;
+        const newPower = state.power + Math.floor(level / 100) * 10;
         state.power = newPower;
 
         level = level % 100;
-
-        async function updatePower() {
-          await game_project_backend.update_user_power(
-            state.index,
-            state.power
-          );
-          await game_project_backend.update_user_experience(
-            state.index,
-            level
-          );
-        }
-        updatePower();
       }
       state.level = level;
     },
@@ -105,9 +85,8 @@ const profileSlice = createSlice({
         [5, 10, 2],
       ];
     },
-    CHANGE_HEALTH(state, action) {
+    CHANGE_MAX_HEALTH(state, action) {
       const newHealth = action.payload;
-      state.health = newHealth;
       state.max_health = newHealth;
     },
     TAKE_DAMAGE(state, action) {

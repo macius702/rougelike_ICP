@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import innkeeper from "../../../../../public/innkeeper.png";
 import inn_full from "../../../../../public/inn_full_pixel.png";
+import { updateGold } from "../../../../../store/thunkActions";
 
 export default function Inn({ setLocation }) {
   const dispatch = useDispatch();
@@ -18,14 +19,14 @@ export default function Inn({ setLocation }) {
     }, 3000);
   }
   function restFunction(){
-    dispatch(profileActions.CHANGE_GOLD(-10));
+    dispatch(updateGold(-10));
     dispatch(profileActions.TAKE_DAMAGE(-100));
     dispatch(profileActions.REFILL_ABILITY_NUMBER());
     notification("Player took a long rest.");
   }
 
   function healFunction(healAmount, goldAmount) {
-    dispatch(profileActions.CHANGE_GOLD(-goldAmount));
+    dispatch(updateGold(-goldAmount));
     dispatch(profileActions.TAKE_DAMAGE(-healAmount));
     notification("Player regained " + healAmount + " HP.");
   }
@@ -59,7 +60,7 @@ export default function Inn({ setLocation }) {
           className={classes.pointerHover}
           animate={{ x: 0 }}
           whileHover={{ x: 5 }}
-          onClick={()=>healFunction(50,3)}
+          onClick={()=>healFunction(15,3)}
         >
           &gt; Elvish wine, please. (+50hp) - 3gp
         </motion.p>
@@ -67,7 +68,7 @@ export default function Inn({ setLocation }) {
           className={classes.pointerHover}
           animate={{ x: 0 }}
           whileHover={{ x: 5 }}
-          onClick={()=>healFunction(80,5)}
+          onClick={()=>healFunction(30,5)}
         >
           &gt; Orkish mead, please. (+80hp) - 5gp
         </motion.p>

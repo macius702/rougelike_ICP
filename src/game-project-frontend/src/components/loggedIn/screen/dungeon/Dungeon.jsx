@@ -1,4 +1,4 @@
-import { AnimatePresence, delay, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import classes from "./Dungeon.module.css";
 import goblin from "../../../../../public/goblin.png";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { profileActions } from "../../../../../store/profileSlice";
 import NextFloorMenu from "./NextFloorMenu";
 import EnemyInfo from "./EnemyInfo";
+import { updateGold, updateLevel } from "../../../../../store/thunkActions";
 
 export default function Dungeon({ setLocation, location }) {
   const dispatch = useDispatch();
@@ -122,11 +123,11 @@ export default function Dungeon({ setLocation, location }) {
     enemyAttack(enemyStunned);
   }
 
-  function getExperience() {
+  async function getExperience() {
     const geinedXP = Math.floor(Math.random() * 60 + 10);
-    dispatch(profileActions.CHANGE_LEVEL(geinedXP));
+    await dispatch(updateLevel(geinedXP));
     const geinedGold = Math.floor(Math.random() * 12 + 3);
-    dispatch(profileActions.CHANGE_GOLD(geinedGold));
+    await dispatch(updateGold(geinedGold));
   }
 
   function enemyAttack(enemyStunned) {

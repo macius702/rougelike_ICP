@@ -20,4 +20,6 @@ service : {
     "update_user_forest_floor": (int32, int32) -> ();
     "get_user_experience_at_index": (int32) -> (int32) query;
     "update_user_experience": (int32, int32) -> ();
+    "get_user_health_at_index": (int32) -> (int32) query;
+    "update_user_health": (int32, int32) -> ();
 }
