@@ -10,6 +10,7 @@ import inn_selected from "../../../../public/inn_pixel_selected.png";
 import { useState } from "react";
 import Dungeon from "./dungeon/Dungeon";
 import Inn from "./inn/Inn";
+import { motion } from "framer-motion";
 
 export default function GameScreen({ location, setLocation }) {
   const [forestHover, setForestHover] = useState(false);
@@ -19,9 +20,12 @@ export default function GameScreen({ location, setLocation }) {
   return (
     <div className={classes.gameScreenDiv}>
       {location === "" && (
-        <div
+        <motion.div
           className={classes.tableBackground}
           style={{ backgroundImage: "url(" + woodBackground + ")" }}
+          key="worldMap"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { delay: 0.2 } }}
         >
           <div className={classes.worldMapDiv}>
             <img src={map} alt="World map" className={classes.worldMapImg} />
@@ -31,6 +35,7 @@ export default function GameScreen({ location, setLocation }) {
               className={classes.locationForest}
               onPointerOver={() => setForestHover(true)}
               onPointerOut={() => setForestHover(false)}
+              onClick={() => setLocation("forest")}
             />
             <img
               src={caveHover ? cave_selected : cave}
@@ -49,10 +54,11 @@ export default function GameScreen({ location, setLocation }) {
               onClick={() => setLocation("inn")}
             />
           </div>
-        </div>
+        </motion.div>
       )}
-      {location === "inn" && <Inn setLocation={setLocation}/>}
-      {location === "cave" && (
+
+      {location === "inn" && <Inn setLocation={setLocation} />}
+      {(location === "cave" || location === "forest") && (
         <Dungeon setLocation={setLocation} location={location} />
       )}
     </div>

@@ -9,11 +9,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { profileActions } from "../../../../store/profileSlice";
 
-export default function PlayerPortrait() {
+export default function PlayerPortrait({selectedPortrait,setSelectedPortrait}) {
   const dispatch = useDispatch();
   const image_array = [knight, ranger, mage];
   const image_array_names = ["Knight", "Ranger", "Mage"];
-  const [selectedPortrait, setSelectedPortrait] = useState(0);
 
   const userIndex = useSelector((state) => state.profile.index);
 

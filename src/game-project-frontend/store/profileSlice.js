@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { game_project_backend } from "declarations/game-project-backend";
 
 const profileSlice = createSlice({
   name: "profile",
@@ -57,10 +56,19 @@ const profileSlice = createSlice({
     CHANGE_LEVEL(state, action) {
       let level = state.level + action.payload;
       if (level >= 100) {
-        const newPower = state.power + Math.floor(level / 100) * 10;
+        const newPower = state.power + Math.floor(level / 100) * 5;
         state.power = newPower;
 
         level = level % 100;
+
+        const maxHealth = 33 + newPower;
+        state.max_health = Math.floor(maxHealth);
+        state.health = Math.floor(maxHealth);
+        state.abilities = [
+          [20, 10, 3],
+          [20, 5, 10],
+          [5, 10, 2],
+        ];
       }
       state.level = level;
     },

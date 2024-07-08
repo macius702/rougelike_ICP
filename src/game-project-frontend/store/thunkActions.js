@@ -15,6 +15,6 @@ export const updateLevel = (amount) => async (dispatch, getState) => {
 };
 export const updateHealth = (amount) => async (dispatch, getState) => {
     dispatch(profileActions.TAKE_DAMAGE(amount));
-    const { health } = getState().profile;
-    await game_project_backend.get_user_health_at_index(index, health);
+    const { index, health } = getState().profile;
+    await game_project_backend.update_user_health(index, health);
   };

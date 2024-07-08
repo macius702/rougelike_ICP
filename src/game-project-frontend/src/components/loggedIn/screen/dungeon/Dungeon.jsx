@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 import classes from "./Dungeon.module.css";
 import goblin from "../../../../../public/goblin.png";
 import ork from "../../../../../public/ork.png";
+import elf from "../../../../../public/elf.png";
+import dark_elf from "../../../../../public/dark_elf.png";
+import chest from "../../../../../public/treasure_chest.png";
+import bandit_boss from "../../../../../public/bandit_boss.png";
+import dark_elf_boss from "../../../../../public/dark_elf_boss.png";
 
 import cave_full from "../../../../../public/cave_full_pixel.png";
 import forest_full from "../../../../../public/forest_full_pixel.png";
@@ -10,7 +15,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { profileActions } from "../../../../../store/profileSlice";
 import NextFloorMenu from "./NextFloorMenu";
 import EnemyInfo from "./EnemyInfo";
-import { updateGold, updateLevel } from "../../../../../store/thunkActions";
+import {
+  updateGold,
+  updateHealth,
+  updateLevel,
+} from "../../../../../store/thunkActions";
 
 export default function Dungeon({ setLocation, location }) {
   const dispatch = useDispatch();
@@ -22,6 +31,7 @@ export default function Dungeon({ setLocation, location }) {
   const [enemyPoisonedStatus, setEnemyPoisonedStatus] = useState(0);
 
   const [enemyIsAttacking, setEnemyIsAttacking] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const userClass = useSelector((state) => state.profile.class);
   const classAbilities = useSelector((state) => state.profile.abilities);
@@ -38,6 +48,16 @@ export default function Dungeon({ setLocation, location }) {
 
   const [message, setMessage] = useState("");
 
+  function playerFlee() {
+    const rollFlee = Math.floor(Math.random() * 20 + 1);
+    if (rollFlee > 10) {
+      setLocation("");
+    } else {
+      notification("Player wasn't able to flee.");
+    }
+    enemyAttack(false);
+  }
+
   function playerAttack(abilityIndex, abilityNumber) {
     var enemyStunned = false;
     if (abilityNumber <= 0) return;
@@ -52,12 +72,13 @@ export default function Dungeon({ setLocation, location }) {
     if (userClass === 2 && (abilityIndex === 1 || abilityIndex === 2)) {
       //healing spell,magic missle no hit check
       if (abilityIndex === 1) {
-        dmgToEnemy = Math.floor(Math.random() * 12 + 1);
+        dmgToEnemy = Math.floor(Math.random() * 6 + 1);
       } else {
         healToPlayer = Math.floor(Math.random() * 12 + 1);
       }
     } else {
       var rollHit = Math.floor(Math.random() * 20 + 1);
+      if (enemy === "chest") rollHit = Math.floor(Math.random() * 5 + 16);
       if (enemyStunStatus) {
         const rollHit2 = Math.floor(Math.random() * 20 + 1);
         if (rollHit2 > rollHit) rollHit = rollHit2;
@@ -99,7 +120,7 @@ export default function Dungeon({ setLocation, location }) {
       }
     }
     if (healToPlayer > 0) {
-      dispatch(profileActions.TAKE_DAMAGE(-healToPlayer));
+      dispatch(updateHealth(-healToPlayer));
       notification("Player healed himself for " + healToPlayer + " HP.");
     }
     if (enemyHealth <= dmgToEnemy) {
@@ -120,14 +141,16 @@ export default function Dungeon({ setLocation, location }) {
       setEnemyHealth((prev) => prev - dmgToEnemy);
       notification("Player hit the monster for " + dmgToEnemy + " HP.");
     }
-    enemyAttack(enemyStunned);
+    if (enemy !== "chest") enemyAttack(enemyStunned);
   }
 
   async function getExperience() {
-    const geinedXP = Math.floor(Math.random() * 60 + 10);
-    await dispatch(updateLevel(geinedXP));
-    const geinedGold = Math.floor(Math.random() * 12 + 3);
-    await dispatch(updateGold(geinedGold));
+    const geinedXP = Math.floor(Math.random() * 15 + 10);
+    dispatch(updateLevel(geinedXP));
+    let geinedGold = Math.floor(Math.random() * 8 + 3);
+    if (location === "forest") geinedGold *= 2;
+    if (enemy === "chest") geinedGold *= 7;
+    dispatch(updateGold(geinedGold));
   }
 
   function enemyAttack(enemyStunned) {
@@ -154,11 +177,14 @@ export default function Dungeon({ setLocation, location }) {
           if (rollHit === 20) {
             dmgToPlayer *= 2;
           }
+          if (location === "forest") {
+            dmgToPlayer *= 1.5;
+          }
           notification("Player took " + dmgToPlayer + " damage.");
         } else {
           notification("Player dodged the attack.");
         }
-        dispatch(profileActions.TAKE_DAMAGE(dmgToPlayer));
+        dispatch(updateHealth(Math.floor(dmgToPlayer)));
       }
     }, 1000);
     setTimeout(() => {
@@ -168,41 +194,53 @@ export default function Dungeon({ setLocation, location }) {
 
   function notification(messageValue) {
     setMessage(messageValue);
+    setShowNotifications(true);
     setTimeout(() => {
-      setMessage("");
-    }, 3000);
+      setShowNotifications(false);
+    }, 4000);
   }
 
   //minimap shows 2 rooms in front of you and if there is a chest or an enemy
   function calculateEnemy() {
-    const rollEnemyPower = Math.random() * (0.1 * floor) + 1 + 0.1 * floor;
-    const rollEnemyHealth = Math.floor(15 * rollEnemyPower * 2);
+    let rollEnemyPower = Math.random() * (0.1 * floor) + 1 + 0.1 * floor;
 
     var rollEnemyImage = "goblin";
-    if (rollEnemyPower > 1.5 && location === "cave") {
-      // test
-      rollEnemyImage = "ork";
-    } else if (location === "forest") {
-      // elf or something
+    if (floor % 5 == 0) {
+      if (location === "cave") rollEnemyImage = "bandit_boss";
+      else rollEnemyImage = "dark_elf_boss";
+      rollEnemyPower *= 1.5;
+    } else if (floor % 4 == 0) {
+      rollEnemyImage = "chest";
+      rollEnemyPower = 0;
+    } else {
+      if (rollEnemyPower > 1.5 && location === "cave") {
+        // test
+        rollEnemyImage = "ork";
+      } else if (location === "forest") {
+        rollEnemyImage = "dark_elf";
+        if (rollEnemyPower > 1.5) {
+          rollEnemyImage = "elf";
+        }
+      }
     }
+    const rollEnemyHealth = Math.floor(15 * rollEnemyPower * 2);
 
     setEnemy(rollEnemyImage);
     setEnemyHealth(rollEnemyHealth);
     setEnemyMaxHealth(rollEnemyHealth);
     setEnemyPower(rollEnemyPower);
-
-    console.log(rollEnemyImage);
-    console.log(rollEnemyHealth);
-    console.log(rollEnemyPower);
   }
   useEffect(() => {
-    //if something else
-    //else enemy
     calculateEnemy();
   }, [floor]);
 
   return (
-    <div className={classes.caveDiv}>
+    <motion.div
+      className={classes.caveDiv}
+      key="dungeon"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { delay: 0.2 } }}
+    >
       <img
         src={
           location === "cave" ? cave_full : location === "forest" && forest_full
@@ -217,20 +255,41 @@ export default function Dungeon({ setLocation, location }) {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0 }}
+            transition={{
+              delay: 0.2,
+              duration: 0.5,
+            }}
           >
-            <img src={enemy === "ork" ? ork : goblin} alt="goblin" />
+            <img
+              src={
+                enemy === "ork"
+                  ? ork
+                  : enemy === "goblin"
+                  ? goblin
+                  : enemy === "dark_elf"
+                  ? dark_elf
+                  : enemy === "elf"
+                  ? elf
+                  : enemy === "chest"
+                  ? chest
+                  : enemy === "bandit_boss"
+                  ? bandit_boss
+                  : dark_elf_boss
+              }
+              alt="enemy"
+            />
           </motion.div>
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {message && (
+        {showNotifications && (
           <motion.div
             className={classes.notificationMessage}
-            key={message}
+            key={message + Math.random()}
             initial={{ opacity: 0, transition: { delay: 0.5 } }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 75, opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 1 }}
           >
             {message}
           </motion.div>
@@ -261,15 +320,15 @@ export default function Dungeon({ setLocation, location }) {
                 className={classes.pointerHover}
                 animate={{ x: 0 }}
                 whileHover={{ x: 5 }}
-                onClick={() => setLocation("")}
+                onClick={() => playerFlee()}
               >
-                &gt; test
+                &gt; Flee
               </motion.p>
             </div>
             <EnemyInfo
               health={enemyHealth}
               maxHealth={enemyMaxHealth}
-              powerTest={enemyPower}
+              power={enemyPower}
               stun={enemyStunStatus}
               poison={enemyPoisonedStatus}
             />
@@ -279,6 +338,6 @@ export default function Dungeon({ setLocation, location }) {
           <NextFloorMenu location={location} setLocation={setLocation} />
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

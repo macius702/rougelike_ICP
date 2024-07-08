@@ -22,3 +22,26 @@
   height: 100%;
   background-color: rgb(212, 136, 136);
 }
+.characterRemainingAbilities{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  gap:5px;
+  cursor: pointer;
+}
+.characterRemainingAbilities img{
+  width: 50px;
+}
+.full{
+  color: #33ad03;
+  font-family: "Pixelify Sans", sans-serif;
+}
+.half{
+  color: #d88406;
+  font-family: "Pixelify Sans", sans-serif;
+}
+.empty{
+  color: #ad0303;
+  font-family: "Pixelify Sans", sans-serif;
+}

@@ -11,7 +11,7 @@ const [location, setLocation] = useState("");
       className={classes.gameDisplayDiv}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 0.5, duration: 2 }}
+      transition={{ delay: 0.2, duration: 1 }}
     >
       <PlayerMenu />
       <GameScreen location={location} setLocation={setLocation}/>
