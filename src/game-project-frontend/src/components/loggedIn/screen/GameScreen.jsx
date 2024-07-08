@@ -11,8 +11,9 @@ import { useState } from "react";
 import Dungeon from "./dungeon/Dungeon";
 import Inn from "./inn/Inn";
 import { motion } from "framer-motion";
+import PlayerIsDead from "./PlayerIsDead";
 
-export default function GameScreen({ location, setLocation }) {
+export default function GameScreen({ location, setLocation,setDeaths }) {
   const [forestHover, setForestHover] = useState(false);
   const [caveHover, setCaveHover] = useState(false);
   const [innHover, setInnHover] = useState(false);
@@ -61,6 +62,7 @@ export default function GameScreen({ location, setLocation }) {
       {(location === "cave" || location === "forest") && (
         <Dungeon setLocation={setLocation} location={location} />
       )}
+      {location === "playerDead" && <PlayerIsDead setLocation={setLocation} setDeaths={setDeaths}/>}
     </div>
   );
 }

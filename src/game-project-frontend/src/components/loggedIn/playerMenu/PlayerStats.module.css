@@ -28,6 +28,8 @@
   align-items: center;
   margin-top: 15px;
   gap:5px;
+}
+.characterRemainingAbilities:hover{
   cursor: pointer;
 }
 .characterRemainingAbilities img{

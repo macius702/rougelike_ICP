@@ -6,16 +6,16 @@ import ranger_small from "../../../../public/ranger_small.png";
 import mage_small from "../../../../public/mage_small.png";
 import { profileActions } from "../../../../store/profileSlice";
 
-export default function PlayerStats({selectedPortrait,setSelectedPortrait}) {
+export default function PlayerStats({setSelectedPortrait}) {
   const userGold = useSelector((state) => state.profile.gold);
   const userPower = useSelector((state) => state.profile.power);
   const userLevel = useSelector((state) => state.profile.level);
   const userHealth = useSelector((state) => state.profile.health);
   const userMaxHealth = useSelector((state) => state.profile.max_health);
+  const abilities = useSelector((state) => state.profile.abilities);
 
   const healthPercentage = Math.floor((userHealth / userMaxHealth) * 100);
 
-  const abilities = useSelector((state) => state.profile.abilities);
 
   const dispatch = useDispatch();
 

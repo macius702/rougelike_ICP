@@ -6,15 +6,17 @@ import { useState } from "react";
 
 export default function GameDisplay() {
 const [location, setLocation] = useState("");
+const [deaths, setDeaths] = useState(0);
   return (
     <motion.div
       className={classes.gameDisplayDiv}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2, duration: 1 }}
+      initial={{ opacity: 0,scale:0.5 }}
+      animate={{ opacity: 1,scale:1 }}
+      transition={{ delay: 0.5, duration: 1 }}
+      key={`GameDisplay${deaths}`}
     >
       <PlayerMenu />
-      <GameScreen location={location} setLocation={setLocation}/>
+      <GameScreen location={location} setLocation={setLocation} setDeaths={setDeaths}/>
     </motion.div>
   );
 }

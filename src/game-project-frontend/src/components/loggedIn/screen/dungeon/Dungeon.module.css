@@ -33,6 +33,7 @@
     position: absolute;
     width: 100%;
     bottom: 0;
+    left: 0;
     height: 300px;
     background-color: #000000be;
     color: white;
@@ -46,6 +47,7 @@
     position: absolute;
     width: 100%;
     top: 0;
+    left: 0;
     color: white;
     background-color: #000000be;
     justify-content: center;

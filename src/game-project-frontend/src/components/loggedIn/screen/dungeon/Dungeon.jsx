@@ -34,6 +34,7 @@ export default function Dungeon({ setLocation, location }) {
   const [showNotifications, setShowNotifications] = useState(false);
 
   const userClass = useSelector((state) => state.profile.class);
+  const userHealth = useSelector((state) => state.profile.health);
   const classAbilities = useSelector((state) => state.profile.abilities);
   const floor =
     location === "cave"
@@ -74,7 +75,7 @@ export default function Dungeon({ setLocation, location }) {
       if (abilityIndex === 1) {
         dmgToEnemy = Math.floor(Math.random() * 6 + 1);
       } else {
-        healToPlayer = Math.floor(Math.random() * 12 + 1);
+        healToPlayer = Math.floor(Math.random() * 12 + 2);
       }
     } else {
       var rollHit = Math.floor(Math.random() * 20 + 1);
@@ -83,14 +84,14 @@ export default function Dungeon({ setLocation, location }) {
         const rollHit2 = Math.floor(Math.random() * 20 + 1);
         if (rollHit2 > rollHit) rollHit = rollHit2;
       }
-      if (rollHit > 10) {
+      if (rollHit > 5) {
         // if 20 than crit 2x dmg
         if (userClass === 0) {
           if (abilityIndex === 0) {
             dmgToEnemy = Math.floor(Math.random() * 12 + 4);
           } else if (abilityIndex === 1) {
             dmgToEnemy = Math.floor(Math.random() * 8 + 4);
-            if (rollHit > 13) {
+            if (rollHit > 9) {
               setEnemyStunStatus(true);
               enemyStunned = true;
             }
@@ -102,7 +103,7 @@ export default function Dungeon({ setLocation, location }) {
             dmgToEnemy = Math.floor(Math.random() * 12 + 4);
           } else if (abilityIndex === 1) {
             dmgToEnemy = Math.floor(Math.random() * 12 + 2);
-            if (rollHit > 13) {
+            if (rollHit > 9) {
               setEnemyPoisonedStatus(3);
             }
           } else if (abilityIndex === 2) {
@@ -138,8 +139,8 @@ export default function Dungeon({ setLocation, location }) {
       dmgToEnemy += Math.floor(Math.random() * 6 + 1);
     }
     if (dmgToEnemy > 0) {
-      setEnemyHealth((prev) => prev - dmgToEnemy);
-      notification("Player hit the monster for " + dmgToEnemy + " HP.");
+      setEnemyHealth((prev) => prev - Math.floor(dmgToEnemy));
+      notification("Player hit the monster for " + Math.floor(dmgToEnemy) + " HP.");
     }
     if (enemy !== "chest") enemyAttack(enemyStunned);
   }
@@ -172,7 +173,7 @@ export default function Dungeon({ setLocation, location }) {
       } else {
         var dmgToPlayer = 0;
         const rollHit = Math.floor(Math.random() * 20 + 1);
-        if (rollHit > 14) {
+        if (rollHit > 10) {
           dmgToPlayer = Math.floor(Math.random() * 8 + 4);
           if (rollHit === 20) {
             dmgToPlayer *= 2;
@@ -180,7 +181,7 @@ export default function Dungeon({ setLocation, location }) {
           if (location === "forest") {
             dmgToPlayer *= 1.5;
           }
-          notification("Player took " + dmgToPlayer + " damage.");
+          notification("Player took " + Math.floor(dmgToPlayer) + " damage.");
         } else {
           notification("Player dodged the attack.");
         }
@@ -189,6 +190,9 @@ export default function Dungeon({ setLocation, location }) {
     }, 1000);
     setTimeout(() => {
       setEnemyIsAttacking(false);
+      if (userHealth <= 0) {
+        setLocation("playerDead");
+      }
     }, 1000);
   }
 
@@ -296,11 +300,19 @@ export default function Dungeon({ setLocation, location }) {
         )}
       </AnimatePresence>
       <div className={classes.dialogMenu}>
-        {enemyIsAttacking && (
-          <div className={classes.enemyIsAttackingBlockMenu}>
-            Enemy is attacking...
-          </div>
-        )}
+        <AnimatePresence>
+          {enemyIsAttacking && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.1 }}
+              className={classes.enemyIsAttackingBlockMenu}
+            >
+              Enemy is attacking...
+            </motion.div>
+          )}
+        </AnimatePresence>
         {enemy && (
           <>
             <div className={classes.userOptions}>

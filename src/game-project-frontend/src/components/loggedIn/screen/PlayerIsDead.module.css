@@ -1,0 +1,30 @@
+.deathScreen{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+}
+.deathScreen h2, .tryAgainText{
+ user-select: none;
+}
+.tryAgainText:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.tryAgainText{
+    font-size: 150%;
+}
+.scoreTitle{
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 150%;
+}

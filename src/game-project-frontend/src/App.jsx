@@ -15,10 +15,10 @@ function App() {
         <RegisterPanel setLogStatus={setLogStatus} />
       )}
       <Provider store={store} key="home">
-        <AnimatePresence>
-          {logStatus === "login" && <LoginPanel setLogStatus={setLogStatus} />}
-        </AnimatePresence>
-        {logStatus === "loggedIn" && <GameDisplay />}
+            {logStatus === "login" && (
+              <LoginPanel setLogStatus={setLogStatus} />
+            )}
+          {logStatus === "loggedIn" && <div className="black_background"><GameDisplay /></div>}
       </Provider>
     </main>
   );

@@ -7,7 +7,6 @@ import { decryptString } from "../../../tools/enryption";
 import { useDispatch } from "react-redux";
 import { profileActions } from "../../../store/profileSlice";
 import { motion } from "framer-motion";
-import { updateHealth } from "../../../store/thunkActions";
 
 export default function LoginPanel({ setLogStatus }) {
   const dispatch = useDispatch();
@@ -122,11 +121,9 @@ export default function LoginPanel({ setLogStatus }) {
   }
 
   return (
-    <motion.div
+    <div
       className={classes.loginPanelDiv}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      key="loginPanel"
     >
       <div className={classes.loginForm}>
         <h1>Login</h1>
@@ -158,6 +155,6 @@ export default function LoginPanel({ setLogStatus }) {
           </Button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
