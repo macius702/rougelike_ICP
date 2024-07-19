@@ -6,9 +6,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import innkeeper from "../../../../../public/innkeeper.png";
 import inn_full from "../../../../../public/inn_full_pixel.png";
 import { updateGold, updateHealth } from "../../../../../store/thunkActions";
+import { useSelector } from "react-redux";
 
 export default function Inn({ setLocation }) {
   const dispatch = useDispatch();
+  const userGold = useSelector((state) => state.profile.gold);
 
   const [message, setMessage] = useState("");
 
@@ -19,16 +21,22 @@ export default function Inn({ setLocation }) {
     }, 3000);
   }
   function restFunction() {
-    dispatch(updateGold(-25));
-    dispatch(updateHealth(-100));
-    dispatch(profileActions.REFILL_ABILITY_NUMBER());
-    notification("Player took a long rest.");
+    if(userGold>=25){
+      dispatch(updateGold(-25));
+      dispatch(updateHealth(-100));
+      dispatch(profileActions.REFILL_ABILITY_NUMBER());
+      notification("Player took a long rest.");
+    }
+    else notification("Player does not have enough gold.");
   }
 
   function healFunction(healAmount, goldAmount) {
-    dispatch(updateGold(-goldAmount));
-    dispatch(updateHealth(-healAmount));
-    notification("Player regained " + healAmount + " HP.");
+    if(userGold>=goldAmount){
+      dispatch(updateGold(-goldAmount));
+      dispatch(updateHealth(-healAmount));
+      notification("Player regained " + healAmount + " HP.");
+    }
+    else notification("Player does not have enough gold.");
   }
   return (
     <motion.div

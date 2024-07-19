@@ -55,8 +55,8 @@ export default function Dungeon({ setLocation, location }) {
       setLocation("");
     } else {
       notification("Player wasn't able to flee.");
+      enemyAttack(false);
     }
-    enemyAttack(false);
   }
 
   function playerAttack(abilityIndex, abilityNumber) {
@@ -140,7 +140,9 @@ export default function Dungeon({ setLocation, location }) {
     }
     if (dmgToEnemy > 0) {
       setEnemyHealth((prev) => prev - Math.floor(dmgToEnemy));
-      notification("Player hit the monster for " + Math.floor(dmgToEnemy) + " HP.");
+      notification(
+        "Player hit the monster for " + Math.floor(dmgToEnemy) + " HP."
+      );
     }
     if (enemy !== "chest") enemyAttack(enemyStunned);
   }
@@ -187,13 +189,14 @@ export default function Dungeon({ setLocation, location }) {
         }
         dispatch(updateHealth(Math.floor(dmgToPlayer)));
       }
+      console.log(userHealth);
     }, 1000);
     setTimeout(() => {
       setEnemyIsAttacking(false);
       if (userHealth <= 0) {
         setLocation("playerDead");
       }
-    }, 1000);
+    }, 1500);
   }
 
   function notification(messageValue) {
@@ -286,7 +289,7 @@ export default function Dungeon({ setLocation, location }) {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {showNotifications && (
+        {message && (
           <motion.div
             className={classes.notificationMessage}
             key={message + Math.random()}
