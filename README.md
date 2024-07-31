@@ -5,7 +5,8 @@
 -- Sign Up
 
   Enter an unique login, set a password, and submit.
-  **!! This is mock signup for better security we should instead use google login or something similar !!**
+  
+  **!! This is a mock signup. For better security, we should consider using Google login or a similar service. !!**
 
 -- Login 
 
