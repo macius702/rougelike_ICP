@@ -5,6 +5,7 @@
 -- Sign Up
 
   Enter an unique login, set a password, and submit.
+  **!! This is mock signup for better security we should instead use google login or something similar !!**
 
 -- Login 
 
