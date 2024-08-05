@@ -1,3 +1,7 @@
+-- Video
+
+https://www.youtube.com/watch?v=hFhwxojVv5Q
+
 -- How To Start
 
   In the first terminal use "dfx start", open another terminal and use "dfx deploy".
